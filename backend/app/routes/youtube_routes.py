@@ -51,4 +51,8 @@ def ask_video(data: dict):
 
     answer= ask_question(retriever,question)
 
-    
+    return {
+    "question": question,
+    "answer": answer
+    }
+

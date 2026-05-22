@@ -34,11 +34,15 @@ def create_retriever(vector_store):
     return retriever 
 
 
-llm = HuggingFaceEndpoint(
+llm1 = HuggingFaceEndpoint(
     repo_id="Qwen/Qwen2.5-7B-Instruct",
-    task="text-generation",
+    task="conversational",
     max_new_tokens=512,
     temperature=0.5
+)
+
+llm= ChatHuggingFace(
+    llm=llm1
 )
 
 def format_context(docs):
@@ -83,4 +87,4 @@ def ask_question(retriever,question):
 
     response= llm.invoke(prompt)
 
-    return response 
+    return response.content
