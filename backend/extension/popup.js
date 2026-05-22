@@ -5,24 +5,6 @@ const questionInput = document.getElementById("questionInput");
 const chatContainer = document.getElementById("chatContainer");
 
 
-/* ── Helpers ── */
-
-function getTime() {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function clearEmptyState() {
-    const empty = chatContainer.querySelector('.empty-state');
-    if (empty) empty.remove();
-}
-
-function addMeta(align, label) {
-    const meta = document.createElement("div");
-    meta.classList.add("msg-meta", align);
-    meta.textContent = label;
-    chatContainer.appendChild(meta);
-    return meta;
-}
 
 function addMessage(text, className) {
 
@@ -32,15 +14,7 @@ function addMessage(text, className) {
 
     messageDiv.classList.add(className);
 
-    if (text === "Thinking...") {
-        messageDiv.classList.add("thinking");
-        const dots = document.createElement("div");
-        dots.classList.add("thinking-dots");
-        dots.innerHTML = '<span></span><span></span><span></span>';
-        messageDiv.appendChild(dots);
-    } else {
-        messageDiv.innerText = text;
-    }
+    messageDiv.innerText = text;
 
     chatContainer.appendChild(messageDiv);
 
@@ -50,15 +24,6 @@ function addMessage(text, className) {
 }
 
 
-/* ── Auto-resize textarea ── */
-
-questionInput.addEventListener("input", () => {
-    questionInput.style.height = "auto";
-    questionInput.style.height = Math.min(questionInput.scrollHeight, 120) + "px";
-});
-
-
-/* ── Send handler ── */
 
 askBtn.addEventListener("click", async () => {
 
@@ -66,18 +31,11 @@ askBtn.addEventListener("click", async () => {
 
     if (!question) return;
 
-    clearEmptyState();
-
-    addMeta("right", "You · " + getTime());
 
     addMessage(question, "user-message");
 
     questionInput.value = "";
-    questionInput.style.height = "auto";
 
-    askBtn.disabled = true;
-
-    const aiTime = getTime();
 
     const loadingMessage =
         addMessage("Thinking...", "ai-message");
@@ -100,12 +58,9 @@ askBtn.addEventListener("click", async () => {
         // Check if current tab is YouTube
         if (!videoUrl.includes("youtube.com")) {
 
-            loadingMessage.classList.remove("thinking");
-            loadingMessage.innerHTML = '';
             loadingMessage.innerText =
                 "Please open a YouTube video first.";
 
-            askBtn.disabled = false;
             return;
         }
 
@@ -142,8 +97,6 @@ askBtn.addEventListener("click", async () => {
 
         console.log("Backend Response:", data);
 
-        loadingMessage.classList.remove("thinking");
-        loadingMessage.innerHTML = '';
 
         // Handle backend response safely
         if (data.answer) {
@@ -166,25 +119,14 @@ askBtn.addEventListener("click", async () => {
                 "No valid response received.";
         }
 
-        addMeta("left", "AI · " + aiTime);
-
     }
 
     catch (error) {
 
         console.error("Frontend Error:", error);
 
-        loadingMessage.classList.remove("thinking");
-        loadingMessage.innerHTML = '';
         loadingMessage.innerText =
             "Something went wrong.";
-
-        addMeta("left", "AI · " + aiTime);
-    }
-
-    finally {
-        askBtn.disabled = false;
-        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
 });
