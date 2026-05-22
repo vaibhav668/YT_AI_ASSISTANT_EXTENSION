@@ -1,3 +1,4 @@
+````markdown
 # YouTube AI Assistant Extension
 
 An AI-powered Chrome extension that allows users to ask questions about the currently playing YouTube video using Retrieval-Augmented Generation (RAG).
@@ -38,6 +39,56 @@ The extension automatically detects the active YouTube video, fetches its transc
 * HuggingFace LLM Endpoint
 * YouTube Transcript API
 
+### AI / GenAI
+
+* Retrieval-Augmented Generation (RAG)
+* Semantic Search
+* Vector Embeddings
+* Context-Based Question Answering
+
+---
+
+## Models Used
+
+### LLM
+
+The project uses the following HuggingFace instruction-tuned model for conversational question answering:
+
+```python
+llm = HuggingFaceEndpoint(
+    repo_id="Qwen/Qwen2.5-7B-Instruct",
+    task="conversational",
+    max_new_tokens=512,
+    temperature=0.5
+)
+````
+
+#### Why This Model?
+
+* Strong instruction-following capability
+* Good conversational response quality
+* Effective for RAG-based applications
+* Produces contextual answers from retrieved transcript chunks
+
+---
+
+### Embedding Model
+
+The project uses the following sentence-transformer model for semantic embeddings:
+
+```python
+embedding_model = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+```
+
+#### Why This Embedding Model?
+
+* Lightweight and fast
+* Efficient semantic similarity search
+* Commonly used for RAG pipelines
+* Good balance between speed and accuracy
+
 ---
 
 ## Project Structure
@@ -76,8 +127,9 @@ youtube-ai-assistant/
 5. Transcript is split into chunks
 6. Chunks are converted into embeddings
 7. FAISS performs semantic similarity search
-8. Relevant context is sent to the LLM
-9. AI-generated answer is returned to the extension UI
+8. Relevant context is retrieved
+9. Context and question are passed to the LLM
+10. AI-generated answer is returned to the extension UI
 
 ---
 
@@ -96,7 +148,9 @@ Semantic Retrieval
         ↓
 Prompt Construction
         ↓
-LLM Response
+Qwen2.5-7B-Instruct
+        ↓
+AI Response
 ```
 
 ---
@@ -230,9 +284,13 @@ This project helped in understanding:
 * Frontend-backend integration
 * Async JavaScript
 * API handling and debugging
+* LLM integration using HuggingFace
 
 ---
 
 ## License
 
 This project is for educational and portfolio purposes.
+
+```
+```
