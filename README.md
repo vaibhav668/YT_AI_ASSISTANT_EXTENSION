@@ -1,5 +1,5 @@
-````markdown
-# YouTube AI Assistant Extension
+
+## YouTube AI Assistant Extension
 
 An AI-powered Chrome extension that allows users to ask questions about the currently playing YouTube video using Retrieval-Augmented Generation (RAG).
 
@@ -292,5 +292,3 @@ This project helped in understanding:
 
 This project is for educational and portfolio purposes.
 
-```
-```
